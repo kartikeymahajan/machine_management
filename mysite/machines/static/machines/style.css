@@ -1,0 +1,78 @@
+/* Reset default browser styles */
+body, h1, h2, ul, li, a {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+/* Define a background color and font family for the entire page */
+body {
+    background-color: #f0f0f0; /* Change this to your preferred background color */
+    font-family: Arial, sans-serif; /* Change the font family if desired */
+}
+
+/* Style the heading */
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333; /* Change the heading color */
+}
+
+/* Style the machine list */
+ul {
+    padding: 0;
+}
+
+li {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Style available machines */
+li.available {
+    border-color: #4CAF50; /* Green border for available machines */
+}
+
+/* Style occupied machines */
+li.occupied {
+    border-color: #F44336; /* Red border for occupied machines */
+}
+
+/* Style the book button */
+a.book-button {
+    display: inline-block;
+    background-color: #4CAF50; /* Green button background color */
+    color: #fff; /* Button text color */
+    padding: 5px 10px;
+    border-radius: 3px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+a.book-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Style the details button */
+a.details-button {
+    display: inline-block;
+    background-color: #2196F3; /* Blue button background color */
+    color: #fff; /* Button text color */
+    padding: 5px 10px;
+    border-radius: 3px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+a.details-button:hover {
+    background-color: #1976D2; /* Darker blue on hover */
+}

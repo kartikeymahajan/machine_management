@@ -1,0 +1,9 @@
+li a {
+    color: white;
+    font-weight: bold;
+    font-size: larger;
+}
+
+body {
+    background: yellowgreen url("images/background.jpg") no-repeat;
+}

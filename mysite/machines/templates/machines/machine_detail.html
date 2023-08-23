@@ -1,0 +1,24 @@
+{% comment %} {% load static %} {% endcomment %}
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+
+{% block content %}
+<h1>Machine Details</h1>
+<p>Name: {{ machine.name }}</p>
+<p>Status: {% if machine.status %} Free {% else %} Occupied by <b>{{ machine.user }}</b> {% endif %}</p>
+{% if machine.status == False %}
+    <p><b>Booking Time:</b> {{ machine.start_time }} <b>Booking Till: </b> {{ machine.end_time}} </p>
+    <p><b>Purpose:</b> {{machine.purpose}}</p>
+{% endif %}
+<p>Last Occupied: {{ machine.timestamp }}</p>
+
+{% if machine.status == False %}
+    {% if user_can_free %}
+        <p><a href="{% url 'unbook_machine' machine.id %}" class="btn btn-danger">Free</a></p>
+    {% endif %}
+{% endif %}
+{% if user_has_active_booking %}
+    <a href="{% url 'unbook_machine' user_active_booking.id %}" class="btn btn-warning">Unbook</a>
+{% endif %}
+
+<a href="{% url 'machine_list' %}">Back to List</a>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Your App Title{% endblock %}</title>
+    <!-- Link to your CSS files -->
+    <link rel="stylesheet" href="{% static 'machines/style.css' %}">
+    <!-- Any other head elements like fonts, favicons, etc. -->
+</head>
+<body>
+    <header>
+        <!-- Navigation links -->
+        <nav>
+            <ul>
+                
+                <li><a href="{% url 'machine_list' %}">Machines</a></li>
+                <!-- Add other navigation links here -->
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        {% block content %}
+        <!-- This is where your individual templates will inject content -->
+        {% endblock %}
+    </main>
+    
+    <footer>
+        <!-- Footer content -->
+    </footer>
+    
+    <!-- Any JavaScript files you want to include -->
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html> {% endcomment %}
