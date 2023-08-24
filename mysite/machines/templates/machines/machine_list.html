@@ -35,7 +35,8 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
 
-              <div class = "navbar-float-left"><a class="navbar-brand" href="#">Machines Management Portal</a></div>
+              <div class = "navbar-float-left"><a class="navbar-brand" href="#"><b>Machine Management Portal</b></a></div>
+
 
               <div class="navbar-float-right" id="navbarSupportedContent">
                 <form class="d-flex">
@@ -48,26 +49,29 @@
         <main >
             <b>
              <div class="container mt-5 p-5 border rounded">
-                 <p>Indian Time: <span id="indianTime"></span></p>
-                 <p>New Zealand Time: <span id="newZealandTime"></span></p>
+                 <p>Indian Time and Date: <span id="indianTimeAndDate"></span></p>
+                 <p>New Zealand Time and Date:
+                 <span id="newZealandTime"></span></p>
 
                 {% for machine in machines %}
                     <div class = "machines_list">
 
                          <div class="alert alert-success text-center mb-3 ">
 
-                             
 
 
-                            <h3><i class="fa-solid fa-computer"></i>{{ machine.name }}</h3>
+
+                            <h1><i class="fa-solid fa-computer"></i>  <br>  {{ machine.name }}</h1>
+
+
 
 
                         {% if machine.status %}
 
-                                <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" name="Active">Book Machine</a>
+                                <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" name="Active"><b>Book Machine</b></a>
 
 
-                                <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive">Details</a>
+                                <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
 
                         {% else %}
 
@@ -75,7 +79,7 @@
                              <div class="alert alert-success">
                             (Occupied by {{ machine.user }} from {{ machine.start_time|date:"DATETIME_FORMAT" }} to {{ machine.end_time|date:"DATETIME_FORMAT" }})
                                  </div>
-                             <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive">Details</a>
+                             <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
                         {% endif %}
 
                               </div>
@@ -90,27 +94,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     {% endblock %}
-<script>
-    // Function to update the time in a specific time zone
-    function updateTimeInTimeZone(timezone, elementId) {
-        const currentDateTime = new Date();
-        const offset = timezone === "Indian" ? 5.5 : 12; // Indian Standard Time (IST) is UTC+5:30, New Zealand is UTC+12
-        const utcTime = currentDateTime.getTime();
-        const localTime = utcTime + offset * 3600000; // Convert offset to milliseconds
-        const formattedTime = new Date(localTime).toLocaleTimeString();
 
-        // Update the content of the element with the formatted time
-        document.getElementById(elementId).textContent = formattedTime;
-    }
 
-    // Update times immediately and then every second (1000 milliseconds)
-    updateTimeInTimeZone("Indian", "indianTime");
-    updateTimeInTimeZone("NewZealand", "newZealandTime");
-    setInterval(() => {
-        updateTimeInTimeZone("Indian", "indianTime");
-        updateTimeInTimeZone("NewZealand", "newZealandTime");
-    }, 1000); // Update every second
-</script>
+
+
+
+
 
 </body>
 </html>

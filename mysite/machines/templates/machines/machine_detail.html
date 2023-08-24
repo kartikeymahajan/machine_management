@@ -22,7 +22,7 @@
           <div class="alert alert-success text-center mb-3 ">
               {% block content %}
 <h1>Machine Details</h1>
-<p><b>Name: {{ machine.name }}<b></b></p>
+<p><b>Name: {{ machine.name }}</b></p>
               <p><b>Status: {% if machine.status %} Free {% else %} </b>Occupied by <b>{{ machine.user }}</b> {% endif %}</p>
 {% if machine.status == False %}
     <p><b>Booking Time:</b> {{ machine.start_time }} <b>Booking Till: </b> {{ machine.end_time}} </p>
@@ -32,11 +32,11 @@
 
 {% if machine.status == False %}
     {% if user_can_free %}
-        <p><a href="{% url 'unbook_machine' machine.id %}" class="btn btn-info">Free</a></p>
+        <p><a href="{% url 'unbook_machine' machine.id %}" class="btn btn-info"><b>Free</b></a></p>
     {% endif %}
 {% endif %}
 {% if user_has_active_booking %}
-    <a href="{% url 'unbook_machine' user_active_booking.id %}" class="btn btn-warning">Unbook</a>
+    <a href="{% url 'unbook_machine' user_active_booking.id %}" class="btn btn-warning"><b>Unbook</b></a>
 {% endif %}
 
 <a href="{% url 'machine_list' %}" class="btn btn-warning"><b>Back to List<b></b></a>
