@@ -7,60 +7,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <!-- Include Bootstrap CSS via CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    {% comment %} <link rel="stylesheet" href="{% static 'machines/style.css' %}"> {% endcomment %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
-        div.heading{
-            height: 100%;
-            width: 100%;
-            position: sticky;
-            top: 0;
-            background-color: pink;
-            text-align: center;
-        }
+      *{
+      font-family: 'Poppins', sans-serif;
 
-        nav.background-color{
-            background-color: red;
-        }
+      }
+    </style>
 
-        div.navbar-float-left{
-            width:50%;
-            float:left
-        }
-
-        div.navbar-float-right{
-            margin-left:50%
-            {% comment %} background-color: red {% endcomment %}
-        }
-
-        div.machines_list{
-            border: 1px solid black;
-        }
-
-        span.span_machine_name{
-            display: inline-block;
-            {% comment %} border: 1px solid red; {% endcomment %}
-            height: 20%;
-			width: 10%;
-            vertical-align: middle;
-        }
-
-        p.availability {
-            font-size: 15px;
-			font-weight: bold;
-        }
-
+    <style>
 
     </style>
-</head> 
+</head>
+
 <body class="bg-body-tertiary">
+
+
+
     {% block content %}
     <div class = "container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-            
+
               <div class = "navbar-float-left"><a class="navbar-brand" href="#">Machines Management Portal</a></div>
 
               <div class="navbar-float-right" id="navbarSupportedContent">
@@ -72,35 +46,66 @@
             </div>
         </nav>
         <main >
-            <div class="my-3 p-3 bg-body rounded shadow-sm">
+             <div class="container mt-5 p-5 border rounded">
+                 <p>Indian Time: <span id="indianTime"></span></p>
+                 <p>New Zealand Time: <span id="newZealandTime"></span></p>
+
                 {% for machine in machines %}
                     <div class = "machines_list">
-                        <span class = "span_machine_name">
+
+                         <div class="alert alert-success text-center mb-3 ">
+
                             <h3>{{ machine.name }}</h3>
-                        </span>    
+
+
                         {% if machine.status %}
-                            <p class = "availability">(Available)</p>
-                            <span class = "span_machine_name">
-                            <a href="{% url 'book_machine' machine.id %}">Book</a>
-                            </br>
-                            <a href="{% url 'machine_detail' machine.id %}">Details</a>
-                            </span>
+
+                                <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" name="Active">Book Machine</a>
+
+
+                                <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive">Details</a>
+
                         {% else %}
-                            <p class = "availability">(Occupied)</p>
-                            <a href="{% url 'machine_detail' machine.id %}">Details</a> </br>
+
+
+                             <div class="alert alert-success">
                             (Occupied by {{ machine.user }} from {{ machine.start_time|date:"DATETIME_FORMAT" }} to {{ machine.end_time|date:"DATETIME_FORMAT" }})
+                                 </div>
+                             <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive">Details</a>
                         {% endif %}
-                        </hr>
+
+                              </div>
                     </div>
                 {% endfor %}
             </div>
         </main>
-        
-    
+
+
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    
+
     {% endblock %}
+<script>
+    // Function to update the time in a specific time zone
+    function updateTimeInTimeZone(timezone, elementId) {
+        const currentDateTime = new Date();
+        const offset = timezone === "Indian" ? 5.5 : 12; // Indian Standard Time (IST) is UTC+5:30, New Zealand is UTC+12
+        const utcTime = currentDateTime.getTime();
+        const localTime = utcTime + offset * 3600000; // Convert offset to milliseconds
+        const formattedTime = new Date(localTime).toLocaleTimeString();
+
+        // Update the content of the element with the formatted time
+        document.getElementById(elementId).textContent = formattedTime;
+    }
+
+    // Update times immediately and then every second (1000 milliseconds)
+    updateTimeInTimeZone("Indian", "indianTime");
+    updateTimeInTimeZone("NewZealand", "newZealandTime");
+    setInterval(() => {
+        updateTimeInTimeZone("Indian", "indianTime");
+        updateTimeInTimeZone("NewZealand", "newZealandTime");
+    }, 1000); // Update every second
+</script>
 
 </body>
 </html>
