@@ -22,8 +22,8 @@
           <div class="alert alert-success text-center mb-3 ">
               {% block content %}
 <h1>Machine Details</h1>
-<p>Name: {{ machine.name }}</p>
-<p>Status: {% if machine.status %} Free {% else %} Occupied by <b>{{ machine.user }}</b> {% endif %}</p>
+<p><b>Name: {{ machine.name }}<b></b></p>
+              <p><b>Status: {% if machine.status %} Free {% else %} </b>Occupied by <b>{{ machine.user }}</b> {% endif %}</p>
 {% if machine.status == False %}
     <p><b>Booking Time:</b> {{ machine.start_time }} <b>Booking Till: </b> {{ machine.end_time}} </p>
     <p><b>Purpose:</b> {{machine.purpose}}</p>
@@ -39,7 +39,7 @@
     <a href="{% url 'unbook_machine' user_active_booking.id %}" class="btn btn-warning">Unbook</a>
 {% endif %}
 
-<a href="{% url 'machine_list' %}" class="btn btn-warning">Back to List</a>
+<a href="{% url 'machine_list' %}" class="btn btn-warning"><b>Back to List<b></b></a>
 {% endblock %}
 
 

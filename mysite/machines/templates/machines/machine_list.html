@@ -46,6 +46,7 @@
             </div>
         </nav>
         <main >
+            <b>
              <div class="container mt-5 p-5 border rounded">
                  <p>Indian Time: <span id="indianTime"></span></p>
                  <p>New Zealand Time: <span id="newZealandTime"></span></p>
@@ -55,7 +56,10 @@
 
                          <div class="alert alert-success text-center mb-3 ">
 
-                            <h3>{{ machine.name }}</h3>
+                             
+
+
+                            <h3><i class="fa-solid fa-computer"></i>{{ machine.name }}</h3>
 
 
                         {% if machine.status %}
@@ -78,6 +82,7 @@
                     </div>
                 {% endfor %}
             </div>
+            </b>
         </main>
 
 
