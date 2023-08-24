@@ -30,10 +30,13 @@
 
 
 
+
+
     {% block content %}
     <div class = "container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
+
 
               <div class = "navbar-float-left"><a class="navbar-brand" href="#"><b>Machine Management Portal</b></a></div>
 
@@ -44,15 +47,27 @@
                   <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
               </div>
-              <div><h4>{{ request.user }}</h4></div>
+              <div><h4> <i class="fa-solid fa-user"></i> {{ request.user }}</h4></div>
+
             </div>
+
         </nav>
+
+
         <main >
+
+                 <div class="alert alert-success text-center mb-3 ">
+            <button type="button" class="btn btn-light "><p>Indian Time: <span id="indianTimeAndDate"></span></p>
+
+                 </button>
+        <button type="button" class="btn btn-light  ">
+                <p>New Zealand Time: <span id="newZealandTime"></span></p>
+                 <span id="newZealandTime"></span></p></button>
+                 </div>
+
             <b>
              <div class="container mt-5 p-5 border rounded">
-                <p>Indian Time: <span id="indianTimeAndDate"></span></p>
-                <p>New Zealand Time: <span id="newZealandTime"></span></p>
-                 <span id="newZealandTime"></span></p>
+
 
                 {% for machine in machines %}
                     <div class = "machines_list">
