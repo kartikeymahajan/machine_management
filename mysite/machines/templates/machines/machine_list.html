@@ -26,7 +26,7 @@
     </style>
 </head>
 
-<body class="bg-body-tertiary">
+<body class="bg-body-tertiary bg-dark">
 
 
 
@@ -38,30 +38,30 @@
               <div class = "navbar-float-left"><a class="navbar-brand" href="#"><b>Machine Management Portal</b></a></div>
 
 
-              <div class="navbar-float-right" id="navbarSupportedContent">
+              {% comment %} <div class="navbar-float-right" id="navbarSupportedContent">
                 <form class="d-flex">
                   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+              </div> {% endcomment %}
+
+              <div class="navbar-float-right" id="navbarSupportedContent">
+                <form class="d-flex" method="get" action="{% url 'machine_list' %}">
+                  <input class="form-control me-2" type="search" name = "search" placeholder="Search" aria-label="Search">
                   <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
               </div>
 
                 <div class="dropdown">
-  <div  class="" data-bs-toggle="dropdown">
-       <i class="fa-solid fa-user"></i> {{ request.user }}
-
-  </div >
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">Profile</a></li>
-    <li><a class="dropdown-item" href="#">Log_Out</a></li>
-    <li><a class="dropdown-item" href="#">Change_User</a></li>
-  </ul>
-</div>
-
-
-            </div>
-
-              <div><h4>{{ request.user }}</h4></div>
-          </div>
+                    <div class="" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-user"> </i> {{ request.user }}
+                    </div >
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Log_Out</a></li>
+                        <li><a class="dropdown-item" href="#">Change_User</a></li>
+                    </ul>
+                </div>
         </nav>
         <main >
 
@@ -79,7 +79,6 @@
             <b>
              <div class="container mt-5 p-5 border rounded bg-light ">
 
-
                 {% for machine in machines %}
                     <div class = "machines_list">
 
@@ -90,8 +89,6 @@
                         {% if machine.status %}
 
                                 <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" name="Active"><b>Book Machine</b></a>
-
-
                                 <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
 
                         {% else %}
@@ -105,6 +102,10 @@
 
                               </div>
                     </div>
+                {% empty %}
+
+                <h2><center>No Results Found</center></h2>
+
                 {% endfor %}
             </div>
             </b>

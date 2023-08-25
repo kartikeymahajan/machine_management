@@ -8,12 +8,24 @@ from django.shortcuts import redirect, get_object_or_404
 from django. contrib import messages
 from django.urls import reverse
 from django.core.mail import send_mail
+from django.db.models import Q
 
 
 @login_required
 def machine_list(request):
-    machines = Machine.objects.all()
-    return render(request, 'machines/machine_list.html', {'machines': machines})
+    # machines = Machine.objects.all()
+    # return render(request, 'machines/machine_list.html', {'machines': machines})
+
+    # Get the search query from the request's GET parameters
+    search_query = request.GET.get('search')
+
+    # Query the machines based on the search query (case-insensitive search)
+    machines = Machine.objects.filter(name__icontains=search_query) if search_query else Machine.objects.all()
+
+    context = {
+        'machines': machines,
+    }
+    return render(request, 'machines/machine_list.html', context)
 
 @login_required
 def machine_detail(request, machine_id):
