@@ -8,7 +8,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django. contrib import messages
 from django.urls import reverse
 from django.core.mail import send_mail
-from django.db.models import Q
+from django.contrib.auth.views import LogoutView
 
 
 @login_required
@@ -84,6 +84,10 @@ def unbook_machine(request, machine_id):
         messages.error(request, "You do not have permission to unbook this machine.")
     
     return render(request, 'unbook_machine.html', {'machine': machine, 'booking_form': unbook_machine})
+
+
+class CustomLogoutView(LogoutView):
+    template_name = 'machines/logout.html'  
 
 def send_notification_email(user_email, machine_name):
     subject = 'Machine Booking Reminder'
