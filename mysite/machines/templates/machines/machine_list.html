@@ -44,8 +44,24 @@
                   <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
               </div>
-              <div><h4>{{ request.user }}</h4></div>
+
+                <div class="dropdown">
+  <div  class="" data-bs-toggle="dropdown">
+       <i class="fa-solid fa-user"></i> {{ request.user }}
+
+  </div >
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Profile</a></li>
+    <li><a class="dropdown-item" href="#">Log_Out</a></li>
+    <li><a class="dropdown-item" href="#">Change_User</a></li>
+  </ul>
+</div>
+
+
             </div>
+
+              <div><h4>{{ request.user }}</h4></div>
+          </div>
         </nav>
         <main >
 
