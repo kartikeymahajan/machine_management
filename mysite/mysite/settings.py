@@ -127,6 +127,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'machines', 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+# login URL pattern
+LOGIN_URL = 'login'
+
 # Settings for email notification. 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
