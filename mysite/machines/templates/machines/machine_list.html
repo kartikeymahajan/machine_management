@@ -31,7 +31,6 @@
 
 
 
-
     {% block content %}
     <div class = "container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -48,9 +47,11 @@
                 </form>
               </div>
 
-                <div class="dropdown">
+                <div class="dropdown ">
   <div  class="" data-bs-toggle="dropdown">
+      <h3>
        <i class="fa-solid fa-user"></i> {{ request.user }}
+      </h3>
 
   </div >
   <ul class="dropdown-menu">
@@ -69,7 +70,9 @@
 
         <main >
 
+
                  <div class="alert alert-dark text-center mb-3  bg-light ">
+
                      <b>
             <button type="button" class="btn btn-light  "><p>Indian Time: <span id="indianTimeAndDate"></span></p>
 
@@ -79,6 +82,7 @@
                  <span id="newZealandTime"></span></p></button>
                      </b>
                  </div>
+
 
             <b>
              <div class="container mt-5 p-5 border rounded bg-light ">
@@ -108,7 +112,9 @@
 
 
                              <div class="alert alert-success">
+
                             (Occupied by {{ machine.user }} from {{ machine.start_time|date:"DATETIME_FORMAT" }} to {{ machine.end_time|date:"DATETIME_FORMAT" }})
+
                                  </div>
                              <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
                         {% endif %}
