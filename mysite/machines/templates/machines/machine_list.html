@@ -9,9 +9,9 @@
     <!-- Include Bootstrap CSS via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
@@ -27,22 +27,12 @@
 </head>
 
 <body class="bg-body-tertiary bg-dark">
-
-
     {% block content %}
     <div class = "container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
 
               <div class = "navbar-float-left"><a class="navbar-brand" href="#"><b>Machine Management Portal</b></a></div>
-
-
-              {% comment %} <div class="navbar-float-right" id="navbarSupportedContent">
-                <form class="d-flex">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-              </div> {% endcomment %}
 
               <div class="navbar-float-right" id="navbarSupportedContent">
                 <form class="d-flex" method="get" action="{% url 'machine_list' %}">
@@ -73,11 +63,13 @@
 
                 <div class="dropdown">
                     <div class="" data-bs-toggle="dropdown">
+                        <h3>
                         <i class="fa-solid fa-user"> </i> {{ request.user }}
+                        </h3>
                     </div >
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Log_Out</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Log_Out</a></li>
                         <li><a class="dropdown-item" href="#">Change_User</a></li>
                     </ul>
                 </div>
