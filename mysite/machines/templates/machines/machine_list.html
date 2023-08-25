@@ -26,9 +26,7 @@
     </style>
 </head>
 
-<body class="bg-body-tertiary bg-dark " >
-
-
+<body class="bg-body-tertiary">
 
 
 
@@ -36,7 +34,6 @@
     <div class = "container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-
 
               <div class = "navbar-float-left"><a class="navbar-brand" href="#"><b>Machine Management Portal</b></a></div>
 
@@ -63,10 +60,9 @@
 
             </div>
 
-
+              <div><h4>{{ request.user }}</h4></div>
+          </div>
         </nav>
-
-
         <main >
 
                  <div class="alert alert-dark text-center mb-3  bg-light ">
@@ -89,13 +85,7 @@
 
                          <div class="alert alert-success text-center mb-3 ">
 
-
-
-
                             <h1><i class="fa-solid fa-computer"></i>  <br>  {{ machine.name }}</h1>
-
-
-
 
                         {% if machine.status %}
 
@@ -174,11 +164,6 @@
         updateNewZealandTime();
         setInterval(updateNewZealandTime, 1000); // Update every second
     </script>
-
-
-
-
-
 
 </body>
 </html>

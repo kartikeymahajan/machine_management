@@ -7,6 +7,7 @@ from .forms import BookingForm  # Import the BookingForm from forms.py
 from django.shortcuts import redirect, get_object_or_404
 from django. contrib import messages
 from django.urls import reverse
+from django.core.mail import send_mail
 
 
 @login_required
@@ -16,8 +17,6 @@ def machine_list(request):
 
 @login_required
 def machine_detail(request, machine_id):
-    # machine = Machine.objects.get(pk=machine_id)
-    # return render(request, 'machines/machine_detail.html', {'machine': machine})
     machine = get_object_or_404(Machine, pk=machine_id)
 
     # Check if the user is authenticated
@@ -35,23 +34,7 @@ def machine_detail(request, machine_id):
     }
     
     return render(request, 'machines/machine_detail.html', context)
-    # user_can_free = False  # Initialize a variable to check if the user can free the machine
     
-    # if request.user.is_authenticated:
-    #     # Check if there's an active booking by the user for this machine
-    #     user_booking = Booking.objects.filter(machine=machine, user=request.user, end_time__gte=timezone.now()).first()
-    #     if user_booking:
-    #         user_can_free = True
-    # else: 
-    #     messages.info(request, "You need to log in to free this machine.")
-    
-    # print(f"user_can_free: {user_can_free}")  # Add this line for debugging
-    # context = {
-    #     'machine': machine,
-    #     'user_can_free': user_can_free,  # Pass the variable to the template
-    # }
-    
-    # return render(request, 'machines/machine_detail.html', context)
 
 @login_required
 def book_machine(request, machine_id):
@@ -88,26 +71,14 @@ def unbook_machine(request, machine_id):
     else:
         messages.error(request, "You do not have permission to unbook this machine.")
     
-    # return redirect('machine_list')
-    # return redirect(reverse('unbook_machine', args=[machine.id]))
     return render(request, 'unbook_machine.html', {'machine': machine, 'booking_form': unbook_machine})
 
-    # machine = get_object_or_404(Machine, pk=machine_id)
+def send_notification_email(user_email, machine_name):
+    subject = 'Machine Booking Reminder'
+    message = f'Dear User,\n\nYour booking for {machine_name} has ended. Please free the machine if you are done using it.'
+    from_email = 'kartikeymahajan321@gmail.com'  # Use the same email configured in settings.py
+    recipient_list = [user_email]
+
+    send_mail(subject, message, from_email, recipient_list)
     
-    # # Check if there's an active booking for this machine
-    # booking = machine.booking_set.filter(end_time__gte=timezone.now()).first()
-    
-    # if booking:
-    #     if request.user == booking.user or request.user.is_superuser:
-    #         # Delete the booking and update the machine status
-    #         booking.delete()
-    #         machine.status = True
-    #         machine.save()
-    #         messages.success(request, "You have successfully unbooked the machine.")
-    #     else:
-    #         messages.error(request, "You do not have permission to unbook this machine.")
-    # else:
-    #     messages.error(request, "No booking found to unbook.")
-    
-    # return redirect(reverse('machine_detail', args=[machine.id]))
 
