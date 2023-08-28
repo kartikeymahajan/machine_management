@@ -87,12 +87,14 @@ def unbook_machine(request, machine_id):
 
 
 class CustomLogoutView(LogoutView):
+    def get_next_page(self):
+        # Customize the redirection URL after logout here
+        return reverse('login')
     template_name = 'machines/logout.html'
 
 
 @login_required
 def profile_view(request):
-
     return render(request, 'profile.html')
 
 def send_notification_email(user_email, machine_name):
