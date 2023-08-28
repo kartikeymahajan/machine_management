@@ -36,7 +36,7 @@
 
               <div class="navbar-float-right" id="navbarSupportedContent">
                 <form class="d-flex" method="get" action="{% url 'machine_list' %}">
-                  <input class="form-control me-2" type="search" name = "search" placeholder="Search" aria-label="Search">
+                  <input class="form-control me-2" type="search" name = "search" placeholder="Search VM here" aria-label="Search">
                   <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
               </div>
@@ -82,10 +82,13 @@
                  <div class="alert alert-dark text-center mb-3  bg-light ">
 
                      <b>
-            <button type="button" class="btn btn-light  "><p>Indian Time: <span id="indianTimeAndDate"></span></p>
+                         <b>
+            <button type="button" class="btn btn-dark  "><p>Indian Time: <span id="indianTimeAndDate"></span></p>
 
                  </button>
-        <button type="button" class="btn btn-light  ">
+                     </b>
+
+        <button type="button" class="btn btn-dark  ">
                 <p>New Zealand Time: <span id="newZealandTime"></span></p>
                  <span id="newZealandTime"></span></p></button>
                      </b>
@@ -110,7 +113,7 @@
                         {% else %}
 
 
-                             <div class="alert alert-success">
+                             <div class="alert alert-warning">
 
                             (Occupied by {{ machine.user }} from {{ machine.start_time|date:"DATETIME_FORMAT" }} to {{ machine.end_time|date:"DATETIME_FORMAT" }})
 
