@@ -95,7 +95,6 @@ class CustomLogoutView(LogoutView):
 
 @login_required
 def profile_view(request):
-
     return render(request, 'profile.html')
 
 def send_notification_email(user_email, machine_name):
