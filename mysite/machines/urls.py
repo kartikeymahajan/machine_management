@@ -10,5 +10,6 @@ urlpatterns = [
     path('<int:machine_id>/unbook/', views.unbook_machine, name='unbook_machine'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('login/', LoginView.as_view(), name='login'),
+    path('profile/', views.profile_view, name='profile'),
 
 ]
