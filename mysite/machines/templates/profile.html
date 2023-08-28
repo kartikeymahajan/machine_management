@@ -19,17 +19,30 @@
 <div class="container mt-5 p-5 border rounded bg-light">
 
 <form method="post">
-     <div class="mb-3 mt-3">
-          <div class="alert alert-success text-center mb-3 ">
+     <div class="mb-1 mt-1">
+         <!-- <div class="alert alert-success text-center mb-3 ">-->
+              <div class="alert alert-success text-center mb-3 ">
 
-              <h1>Name</h1>
+              <h1> User Name : {{ request.user }} </h1>
+              </div>
+              <div class="alert alert-success text-center mb-3 ">
+              <p> Email : {{ request.user.email }}</p>
+              </div>
+              <div class="alert alert-success text-center mb-3 ">
+
+              <p> First Name : {{ request.user.first_name }}</p>
+              </div>
+              <div class="alert alert-success text-center mb-3 ">
+              <p> Last Name : {{ request.user.last_name }}</p>
+              </div>
+
 
 
 
 
 
      </div>
-     </div>
+     <!--</div>-->
 </form>
 
 </div>

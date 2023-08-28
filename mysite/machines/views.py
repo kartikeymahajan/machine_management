@@ -87,7 +87,13 @@ def unbook_machine(request, machine_id):
 
 
 class CustomLogoutView(LogoutView):
-    template_name = 'machines/logout.html'  
+    template_name = 'machines/logout.html'
+
+
+@login_required
+def profile_view(request):
+
+    return render(request, 'profile.html')
 
 def send_notification_email(user_email, machine_name):
     subject = 'Machine Booking Reminder'
