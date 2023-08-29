@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 from .models import Machine, Booking
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from datetime import timedelta
 from .forms import BookingForm  # Import the BookingForm from forms.py
 from django.shortcuts import redirect, get_object_or_404
 from django. contrib import messages
 from django.urls import reverse
 from django.core.mail import send_mail
 from django.contrib.auth.views import LogoutView
+from datetime import timedelta
+
 
 
 @login_required
@@ -65,7 +66,18 @@ def book_machine(request, machine_id):
             machine.end_time = end_time
             machine.status = False
             machine.user = request.user
+
+            # Create a new booking record
+            Booking.objects.create(
+                user=request.user,
+                machine=machine,
+                start_time=start_time,
+                end_time=end_time,
+                purpose = purpose
+            )
+
             machine.save()
+
             return redirect('machine_list')
     
     return render(request, 'machines/book_machine.html', {'machine': machine, 'booking_form': booking_form})
@@ -74,15 +86,19 @@ def book_machine(request, machine_id):
 def unbook_machine(request, machine_id):
     machine = Machine.objects.get(pk=machine_id)
     # Check if the user has the authority to unbook this machine
-    print("machine.user", machine.user, "and request.user", request.user)
     if machine.user == request.user:
         machine.status = True
         machine.user = None
+
+        # deleting the record of VM from booking
+        booking = Booking.objects.get(machine__name=machine.name)
+        booking.delete()
+
         machine.save()
         messages.success(request, "You have successfully unbooked the machine.")
     else:
         messages.error(request, "You do not have permission to unbook this machine.")
-    
+
     return render(request, 'unbook_machine.html', {'machine': machine, 'booking_form': unbook_machine})
 
 
@@ -97,9 +113,11 @@ class CustomLogoutView(LogoutView):
 def profile_view(request):
     return render(request, 'profile.html')
 
-def send_notification_email(user_email, machine_name):
+
+def send_booking_expiry_notification(user_name, user_email, machine_name):
     subject = 'Machine Booking Reminder'
-    message = f'Dear User,\n\nYour booking for {machine_name} has ended. Please free the machine if you are done using it.'
+    message = f'''Dear {user_name},\n\nYour booking for {machine_name} has ended. Please free the machine as soon as possible.
+    \n\n ***This is an automated mail, don't reply.***'''
     from_email = 'kartikeymahajan321@gmail.com'  # Use the same email configured in settings.py
     recipient_list = [user_email]
 
