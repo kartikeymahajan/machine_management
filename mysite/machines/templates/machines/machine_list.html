@@ -76,11 +76,11 @@
 
 
 
- <div class="container">
+ <div class="container-sm ">
   <div class="row row-cols-3">
          {% for machine in machines %}
 
-      <div class="col container mt-2 p-2 border rounded bg-light text-center"> <h1>{{ machine.name }}</h1> </br>
+      <div class="col container p-1 border rounded bg-light text-center"> <h1>{{ machine.name }}</h1> </br>
       {% if machine.status %}
       <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" name="Active"><b>Book Machine</b></a>
       <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
@@ -94,7 +94,7 @@
       </div>
       {% empty %}
 
-                <h2 class="text-color-white"><center>No Results Found</center></h2>
+                <h2 class="container p-1 border rounded bg-light text-center"><center>No Results Found</center></h2>
 
 
       {% endfor %}
