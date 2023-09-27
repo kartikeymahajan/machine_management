@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.contrib.auth.views import LogoutView
 from datetime import timedelta
+import requests
 
 
 
@@ -124,5 +125,16 @@ def send_booking_expiry_notification(user_name, user_email, machine_name):
     recipient_list = [user_email]
 
     send_mail(subject, message, from_email, recipient_list)
+
+
+def send_slack_message(name, vm_name):
+    """ send message to our slack channel """
+    
+    payload = {"text": f"Hello {name}, Your booking for {vm_name} is expired. Please free up the machine"}
+    response = requests.post(
+       "https://hooks.slack.com/services/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",
+        json=payload
+    )
+    print(response.text)
     
 
