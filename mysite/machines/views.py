@@ -80,6 +80,9 @@ def book_machine(request, machine_id):
             )
 
             machine.save()
+            print(machine.name, request.user, start_time, end_time)
+            date_time = end_time.strftime("%m/%d/%Y, %H:%M:%S")
+            send_slack_booking_notification(request.user, machine.name, date_time)
 
             return redirect('machine_list')
     
@@ -133,6 +136,17 @@ def send_slack_message(name, vm_name):
     payload = {"text": f"Hello {name}, Your booking for {vm_name} is expired. Please free up the machine"}
     response = requests.post(
        "https://hooks.slack.com/services/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",
+        json=payload
+    )
+    print(response.text)
+
+def send_slack_booking_notification(name, vm_name, end_time):
+
+    """ send booking confirmation on slack """
+    
+    payload = {"text": f"{vm_name} is occupied by {name} till {end_time}"}
+    response = requests.post(
+       "https://hooks.slack.com/services/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",
         json=payload
     )
     print(response.text)
