@@ -99,8 +99,9 @@ def unbook_machine(request, machine_id):
         # deleting the record of VM from booking
         booking = Booking.objects.get(machine__name=machine.name)
         booking.delete()
-
         machine.save()
+        send_slack_unbooking_notification(machine.name)
+
         messages.success(request, "You have successfully unbooked the machine.")
     else:
         messages.error(request, "You do not have permission to unbook this machine.")
@@ -135,7 +136,7 @@ def send_slack_message(name, vm_name):
     
     payload = {"text": f"Hello {name}, Your booking for {vm_name} is expired. Please free up the machine"}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
         json=payload
     )
     print(response.text)
@@ -146,7 +147,20 @@ def send_slack_booking_notification(name, vm_name, end_time):
     
     payload = {"text": f"{vm_name} is occupied by {name} till {end_time}"}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
+       
+        json=payload
+    )
+    print(response.text)
+
+def send_slack_unbooking_notification(vm_name):
+
+    """ send booking confirmation on slack """
+    
+    payload = {"text": f"{vm_name} is free now."}
+    response = requests.post(
+       "https://hooks.slack.com/services/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",
+       
         json=payload
     )
     print(response.text)

@@ -23,6 +23,8 @@
               {% block content %}
 <h1>Machine Details</h1>
 <p><b>Name: {{ machine.name }}</b></p>
+<p><b>Discription:</b></p>
+<p><b>{{ machine.discription }}</b></p>
 <p><b>Status: {% if machine.status %} Free {% else %} </b><b>Occupied by </b> <b>{{ machine.user }}</b> {% endif %}</p>
 {% if machine.status == False %}
     <p><b>Booking Time: {{ machine.start_time }} </b> <b>Booking Till:  {{ machine.end_time}}  </b> </p>
