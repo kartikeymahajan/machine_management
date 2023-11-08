@@ -13,8 +13,6 @@ from django.contrib.auth.views import LogoutView
 from datetime import timedelta
 import requests
 
-
-
 @login_required
 def machine_list(request):
     # machines = Machine.objects.all()
@@ -60,7 +58,12 @@ def book_machine(request, machine_id):
     if request.method == 'POST':
         booking_form = BookingForm(request.POST)  # Populate the form with POST data
         if booking_form.is_valid():
-            booking_duration = booking_form.cleaned_data['hours']
+            days = booking_form.cleaned_data['days'] if type(booking_form.cleaned_data['days']) == int else 0
+            hours = booking_form.cleaned_data['hours'] if type(booking_form.cleaned_data['hours'])==int else 0
+            minutes = booking_form.cleaned_data['minutes'] if type(booking_form.cleaned_data['minutes'])==int else 0
+
+            # Calculate booking_duration
+            booking_duration = hours + (days * 24) + (minutes / 60)
             start_time = timezone.now()
             end_time = start_time + timedelta(hours=booking_duration)
             purpose = booking_form.cleaned_data['purpose']
@@ -136,7 +139,7 @@ def send_slack_message(name, vm_name):
     
     payload = {"text": f"Hello {name}, Your booking for {vm_name} is expired. Please free up the machine"}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
         json=payload
     )
     print(response.text)
@@ -147,7 +150,7 @@ def send_slack_booking_notification(name, vm_name, end_time):
     
     payload = {"text": f"{vm_name} is occupied by {name} till {end_time}"}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )
@@ -159,7 +162,7 @@ def send_slack_unbooking_notification(vm_name):
     
     payload = {"text": f"{vm_name} is free now."}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )
