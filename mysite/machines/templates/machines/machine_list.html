@@ -15,15 +15,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
-      *{
-      font-family: 'Poppins', sans-serif;
-
-      }
+        *{
+            font-family: 'Poppins', sans-serif;
+        }
     </style>
 
-    <style>
-
-    </style>
 </head>
 
 <body class="bg-body-tertiary bg-dark ">
@@ -31,7 +27,7 @@
     <div class = "container-fluid">
         <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-
+            <img src="{% static 'images/nyriad.png' %}" alt="Company Logo">
               <div class = "navbar-float-left"><a class="navbar-brand" href="#"><b>Machine Management Portal</b></a></div>
 
               <div class="navbar-float-right" id="navbarSupportedContent">
@@ -59,56 +55,38 @@
 
         </nav>
         <main>
-             <div class="alert alert-dark text-center mb-3  bg-light ">
-
-                     <b>
-                         <b>
-            <button type="button" class="btn btn-dark  "><p>Indian Time: <span id="indianTimeAndDate"></span></p>
-
-                 </button>
-                     </b>
-
-        <button type="button" class="btn btn-dark  ">
-                <p>New Zealand Time: <span id="newZealandTime"></span></p>
-                 <span id="newZealandTime"></span></p></button>
-                     </b>
-                 </div>
+            <div class="alert alert-dark text-center mb-3 bg-light" style="display: flex; justify-content: space-between;">
+                <button type="button" class="btn btn-light ">
+                    <b><p>India Time: <span id="indianTimeAndDate"></span></p></b>
+                </button>
+                <button type="button" class="btn btn-light">
+                    <b><p>New Zea Time: <span id="newZealandTime"></span></p></b>
+                </button>
+            </div>
 
 
 
- <div class="container-sm ">
-  <div class="row row-cols-3">
-         {% for machine in machines %}
+        <div class="container-sm ">
+            <div class="row row-cols-3">
+                {% for machine in machines %}
+                    <div class="col container  border rounded border-info bg-light text-center"> <h1>{{ machine.name }}</h1> </br>
+                        {% if machine.status %}
+                            <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" name="Active"><b>Book Machine</b></a>
+                            <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                (Occupied by {{ machine.user }} from {{ machine.start_time|date:"DATETIME_FORMAT" }} to {{ machine.end_time|date:"DATETIME_FORMAT" }})
+                            </div>
+                            <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <h2 class="container p-1 border rounded bg-light text-center"><center>No Results Found</center></h2>
+                {% endfor %}
 
-      <div class="col container  border rounded border-info bg-light text-center"> <h1>{{ machine.name }}</h1> </br>
-      {% if machine.status %}
-      <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" name="Active"><b>Book Machine</b></a>
-      <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
-      {% else %}
-      <div class="alert alert-warning">
-          (Occupied by {{ machine.user }} from {{ machine.start_time|date:"DATETIME_FORMAT" }} to {{ machine.end_time|date:"DATETIME_FORMAT" }})
-
-      </div>
-      <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
-      {% endif %}
-      </div>
-      {% empty %}
-
-                <h2 class="container p-1 border rounded bg-light text-center"><center>No Results Found</center></h2>
-
-
-      {% endfor %}
-
-    </div>
-
-
-  </div>
-
-
-        </main>
-
-
-
+            </div>
+        </div>
+    </main>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
@@ -165,4 +143,3 @@
 
 </body>
 </html>
-

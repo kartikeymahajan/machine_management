@@ -1,5 +1,7 @@
 from django.db import models
+from datetime import datetime, timedelta
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 
@@ -12,6 +14,8 @@ class Machine(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=True)  # True for free, False for occupied
     purpose = models.TextField(blank=True)
+    nz_start_time = models.DateTimeField(null=True, blank=True)
+    nz_end_time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -22,4 +26,11 @@ class Booking(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     purpose = models.TextField()  # Purpose field, can be blank
+
+class Notepad(models.Model):
+    machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
+    content = models.TextField()
+
+    def __str__(self):
+        return f"Notepad for {self.machine}"
 

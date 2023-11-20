@@ -1,11 +1,12 @@
 import time
 
 from django.shortcuts import render, redirect
-from .models import Machine, Booking
+from .models import Machine, Booking, Notepad
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from .forms import BookingForm  # Import the BookingForm from forms.py
+from .forms import BookingForm, NotepadForm  # Import the BookingForm from forms.py
 from django.shortcuts import redirect, get_object_or_404
+from django.http import HttpResponseForbidden
 from django. contrib import messages
 from django.urls import reverse
 from django.core.mail import send_mail
@@ -72,6 +73,8 @@ def book_machine(request, machine_id):
             machine.end_time = end_time
             machine.status = False
             machine.user = request.user
+            machine.nz_start_time = start_time + timedelta(hours=7, minutes=30)
+            machine.nz_end_time = end_time + timedelta(hours=7, minutes=30)
 
             # Create a new booking record
             Booking.objects.create(
@@ -79,7 +82,7 @@ def book_machine(request, machine_id):
                 machine=machine,
                 start_time=start_time,
                 end_time=end_time,
-                purpose = purpose
+                purpose = purpose, 
             )
 
             machine.save()
@@ -110,6 +113,27 @@ def unbook_machine(request, machine_id):
         messages.error(request, "You do not have permission to unbook this machine.")
 
     return render(request, 'unbook_machine.html', {'machine': machine, 'booking_form': unbook_machine})
+
+
+@login_required
+def edit_notepad(request, machine_id):
+    machine = get_object_or_404(Machine, pk=machine_id)
+    
+    # Check if the user is an admin
+    # if not request.user.is_superuser:
+    #     return HttpResponseForbidden("Access denied")
+
+    notepad, created = Notepad.objects.get_or_create(machine=machine)
+
+    if request.method == 'POST':
+        form = NotepadForm(request.POST, instance=notepad)
+        if form.is_valid():
+            form.save()
+            return redirect('machine_detail', machine_id=machine.id)
+    else:
+        form = NotepadForm(instance=notepad)
+
+    return render(request, 'machines/edit_notepad.html', {'machine': machine, 'form': form})
 
 
 class CustomLogoutView(LogoutView):
@@ -161,6 +185,18 @@ def send_slack_unbooking_notification(vm_name):
     """ send booking confirmation on slack """
     
     payload = {"text": f"{vm_name} is free now."}
+    response = requests.post(
+       "https://hooks.slack.com/services/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",
+       
+        json=payload
+    )
+    print(response.text)
+
+def send_slack_hardware_details(data):
+    
+    """Send daily hardware updates on slack"""
+    
+    payload = {"text": data}
     response = requests.post(
        "https://hooks.slack.com/services/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",
        

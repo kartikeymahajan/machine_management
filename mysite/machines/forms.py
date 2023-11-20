@@ -1,4 +1,6 @@
 from django import forms
+from .models import Notepad
+from tinymce.widgets import TinyMCE
 
 class BookingForm(forms.Form):
     days = forms.IntegerField(
@@ -37,3 +39,10 @@ class BookingForm(forms.Form):
         # Ensure at least one field (days, hours, minutes) is provided
         if not any([days, hours, minutes]):
             raise forms.ValidationError('Please provide booking duration in days, hours, or minutes.')
+
+
+class NotepadForm(forms.ModelForm):
+    content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+    class Meta:
+        model = Notepad
+        fields = ['content']
