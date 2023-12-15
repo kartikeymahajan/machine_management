@@ -103,7 +103,7 @@ def unbook_machine(request, machine_id):
         machine.user = None
 
         # deleting the record of VM from booking
-        booking = Booking.objects.get(machine__name=machine.name)
+        booking = Booking.objects.filter(machine__name=machine.name)
         booking.delete()
         machine.save()
         send_slack_unbooking_notification(machine.name)
@@ -114,6 +114,15 @@ def unbook_machine(request, machine_id):
 
     return render(request, 'unbook_machine.html', {'machine': machine, 'booking_form': unbook_machine})
 
+def auto_unbook_machine(machine_name):
+    machine = Machine.objects.get(name = machine_name)
+    machine.status = True
+    machine.user = None
+    # deleting the record of VM from booking
+    booking = Booking.objects.filter(machine__name=machine.name)
+    booking.delete()
+    machine.save()
+    send_slack_unbooking_notification(machine.name)
 
 @login_required
 def edit_notepad(request, machine_id):
@@ -149,9 +158,15 @@ def profile_view(request):
 
 
 def send_booking_expiry_notification(user_name, user_email, machine_name):
-    subject = 'Machine Booking Reminder'
-    message = f'''Dear {user_name},\n\nYour booking for {machine_name} has ended. Please free the machine as soon as possible.
-    \n\n ***This is an automated mail, don't reply.***'''
+    subject = 'Machine Unbook Reminder'
+    message = f'''Dear {user_name},\n\nYour booking for {machine_name} has been ended.\n
+    Please free up the machine or extend the booking period.\n
+
+    Please make a note it will automatically free up in one hour.\n
+
+    Thanks!\n
+    
+    \n\n **********This is an automated mail, don't reply.**********'''
     from_email = 'kartikeymahajan321@gmail.com'  # Use the same email configured in settings.py
     recipient_list = [user_email]
 
@@ -163,7 +178,7 @@ def send_slack_message(name, vm_name):
     
     payload = {"text": f"Hello {name}, Your booking for {vm_name} is expired. Please free up the machine"}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
         json=payload
     )
     print(response.text)
@@ -174,7 +189,7 @@ def send_slack_booking_notification(name, vm_name, end_time):
     
     payload = {"text": f"{vm_name} is occupied by {name} till {end_time}"}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )
@@ -186,7 +201,7 @@ def send_slack_unbooking_notification(vm_name):
     
     payload = {"text": f"{vm_name} is free now."}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )
@@ -198,7 +213,7 @@ def send_slack_hardware_details(data):
     
     payload = {"text": data}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )

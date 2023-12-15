@@ -69,7 +69,7 @@
         <div class="container-sm ">
             <div class="row row-cols-3">
                 {% for machine in machines %}
-                    <div class="col container  border rounded border-info bg-light text-center"> <h1>{{ machine.name }}</h1> </br>
+                    <div class="col container  border rounded border-info bg-light text-center"> <h3><b>{{ machine.name }}</b></h3> </br>
                         {% if machine.status %}
                             <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" name="Active"><b>Book Machine</b></a>
                             <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
@@ -102,8 +102,7 @@
                 month: "long",
                 day: "numeric",
                 hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
+                minute: "2-digit"
             };
             const formattedTimeAndDate = now.toLocaleDateString("en-IN", options);
     
@@ -127,8 +126,7 @@
                 month: "long",
                 day: "numeric",
                 hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
+                minute: "2-digit"
             };
             const formattedTime = now.toLocaleTimeString("en-NZ", options);
     

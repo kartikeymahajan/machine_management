@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.contrib.contenttypes.models import ContentType
 
 # Create your models here.
 
@@ -26,6 +27,7 @@ class Booking(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     purpose = models.TextField()  # Purpose field, can be blank
+    notification_sent = models.BooleanField(default=False)
 
 class Notepad(models.Model):
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE)

@@ -40,7 +40,6 @@
                     {{ machine.notepad_content | linebreaks }}  {# Display the notepad content with line breaks #}
                     <a href="{% url 'edit_notepad' machine.id %}" class="btn btn-info"><b>More Details</b></a></br>
                 
-
                     <!-- {% if request.user.is_superuser %}
                         <a href="{% url 'edit_notepad' machine.id %}">Edit Notepad</a></br>
                     {% endif %} -->
