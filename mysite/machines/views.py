@@ -178,7 +178,7 @@ def send_slack_message(name, vm_name):
     
     payload = {"text": f"Hello {name}, Your booking for {vm_name} is expired. Please free up the machine"}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "",
         json=payload
     )
     print(response.text)
@@ -189,7 +189,7 @@ def send_slack_booking_notification(name, vm_name, end_time):
     
     payload = {"text": f"{vm_name} is occupied by {name} till {end_time}"}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "",
        
         json=payload
     )
@@ -201,7 +201,7 @@ def send_slack_unbooking_notification(vm_name):
     
     payload = {"text": f"{vm_name} is free now."}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "",
        
         json=payload
     )
@@ -213,7 +213,7 @@ def send_slack_hardware_details(data):
     
     payload = {"text": data}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "",
        
         json=payload
     )
