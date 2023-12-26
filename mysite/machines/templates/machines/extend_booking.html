@@ -1,0 +1,91 @@
+<!-- <html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        *{
+            font-family: 'Poppins', sans-serif;
+        }
+        .inline-field {
+            display: inline-block;  /* Display the fields horizontally */
+            width: 80px;  /* Adjust the width as needed */
+            margin-right: 10px;  /* Add spacing between fields */
+        }
+        .inline-field input::placeholder {
+            text-align: center;  /* Center the placeholder text */
+            padding: 0;  /* Remove padding */
+            margin: 0;  /* Remove margin */
+        }
+    </style>
+</head>
+<body class="bg-dark">
+{% block content %}
+  <h1>Extend Booking</h1>
+  <p>You are extending the booking for machine: {{ machine.name }}</p>
+  
+  <form method="post" class="booking-form">
+    {% csrf_token %}
+    
+    {{ booking_form.days }}
+    {{ booking_form.hours }}
+    {{ booking_form.minutes }}
+    {{ booking_form.purpose }}
+    
+    <button type="submit">Extend Booking</button>
+  </form>
+  
+  <p><a href="{% url 'machine_list' %}">Cancel</a></p>
+{% endblock %}
+</body>
+</html> -->
+
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        *{
+            font-family: 'Poppins', sans-serif;
+        }
+        .inline-field {
+            display: inline-block;  /* Display the fields horizontally */
+            width: 80px;  /* Adjust the width as needed */
+            margin-right: 10px;  /* Add spacing between fields */
+        }
+        .inline-field input::placeholder {
+            text-align: center;  /* Center the placeholder text */
+            padding: 0;  /* Remove padding */
+            margin: 0;  /* Remove margin */
+        }
+    </style>
+</head>
+<body class="bg-dark">
+    <b>
+    <div class="container mt-5 p-5 border rounded bg-light ">
+
+        <form method="post">
+            <div class="mb-3 mt-3 ">
+                <div class="alert alert-success text-center mb-3 ">
+
+                    {% csrf_token %}
+                    {{ booking_form.as_p }}
+
+                    <button type="submit" class="btn btn-primary"><b>Extend</b></button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </b>
+</body>
+</html>

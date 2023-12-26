@@ -1,12 +1,11 @@
 import time
-
 from django.shortcuts import render, redirect
 from .models import Machine, Booking, Notepad
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from .forms import BookingForm, NotepadForm  # Import the BookingForm from forms.py
+from .forms import BookingForm, NotepadForm 
 from django.shortcuts import redirect, get_object_or_404
-from django.http import HttpResponseForbidden
+from django.http import Http404, HttpResponseForbidden
 from django. contrib import messages
 from django.urls import reverse
 from django.core.mail import send_mail
@@ -94,6 +93,45 @@ def book_machine(request, machine_id):
     
     return render(request, 'machines/book_machine.html', {'machine': machine, 'booking_form': booking_form})
 
+
+@login_required
+def extend_booking(request, machine_id):
+    machine = get_object_or_404(Machine, pk=machine_id, user=request.user, status=False, end_time__gte=timezone.now())
+    booking = Booking.objects.filter(machine=machine, user=request.user, end_time__gte=timezone.now()).first()
+
+    if not booking:
+        raise Http404("No active booking found for this machine.")
+
+    if request.method == 'POST':
+        booking_form = BookingForm(request.POST)
+        if booking_form.is_valid():
+            extend_duration = calculate_extend_duration(booking_form.cleaned_data)
+            machine.end_time += timedelta(minutes=extend_duration)
+            booking.end_time += timedelta(minutes=extend_duration)
+            machine.save()
+            booking.save()
+            # messages.success(request, 'Booking extended successfully.')
+            return redirect('machine_list')
+
+    else:
+        booking_form = BookingForm()
+
+    return render(
+        request,
+        'machines/extend_booking.html',
+        {'machine': machine, 'booking': booking, 'booking_form': booking_form}
+    )
+
+def calculate_extend_duration(cleaned_data):
+    days = cleaned_data.get('days', 0) if type(cleaned_data.get('days', 0))==int else 0
+    hours = cleaned_data.get('hours', 0) if type(cleaned_data.get('hours', 0))==int else 0
+    minutes = cleaned_data.get('minutes', 0) if type(cleaned_data.get('minutes', 0))==int else 0
+
+    # Convert all durations to minutes and sum them up
+    total_minutes = days * 24 * 60 + hours * 60 + minutes
+    return total_minutes
+
+
 @login_required
 def unbook_machine(request, machine_id):
     machine = Machine.objects.get(pk=machine_id)
@@ -178,7 +216,7 @@ def send_slack_message(name, vm_name):
     
     payload = {"text": f"Hello {name}, Your booking for {vm_name} is expired. Please free up the machine"}
     response = requests.post(
-       "",
+       "https://hooks.slack.com/services/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",
         json=payload
     )
     print(response.text)
@@ -189,7 +227,7 @@ def send_slack_booking_notification(name, vm_name, end_time):
     
     payload = {"text": f"{vm_name} is occupied by {name} till {end_time}"}
     response = requests.post(
-       "",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )
@@ -201,7 +239,7 @@ def send_slack_unbooking_notification(vm_name):
     
     payload = {"text": f"{vm_name} is free now."}
     response = requests.post(
-       "",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )
@@ -213,10 +251,9 @@ def send_slack_hardware_details(data):
     
     payload = {"text": data}
     response = requests.post(
-       "",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )
     print(response.text)
     
-

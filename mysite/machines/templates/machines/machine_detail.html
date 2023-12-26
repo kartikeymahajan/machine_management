@@ -34,6 +34,7 @@
                 {% if machine.status == False %}
                     {% if user_can_free %}
                         <p><a href="{% url 'unbook_machine' machine.id %}" class="btn btn-info"><b>Free</b></a></p>
+                        <p><a href="{% url 'extend_booking' machine.id %}" class="btn btn-info"><b>Extend</b></a></p>
                     {% endif %}
                 {% endif %}
                 <div id="notepad-content" style="display: flex; justify-content: space-between;">
