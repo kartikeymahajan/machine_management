@@ -7,53 +7,45 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <style>
+    <!--<style>
       *{
       font-family: 'Poppins', sans-serif;
 
       }
-    </style>
+    </style>-->
 </head>
-<body class="bg-dark">
-<b>
+<body class="bg-primary">
+<center>
 
-<div class="container mt-5 p-5 border rounded bg-light">
-    <h1 class="text-center"> DETAILS </h1>
+
+<div class="text-center">
 
 <form method="post">
-     <div class="mb-1 mt-1">
-         <!-- <div class="alert alert-success text-center mb-3 ">-->
-              <div class="alert alert-success text-center mb-3 ">
+         <div class="">
+  <div class="">
+                  <div class="card" style="text-align: center;">
+  <img class="" src="/static/images/img_1.png" height="50" width="100" alt="{{ request.user }}">
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+    <p class="card-text">Hi There , I am {{ request.user }} </p>
+  </div>
+  <ul class="list-group list-group-flush ">
+<!--
+    <li class="list-group-item">User Name : {{ request.user }}</li>
+-->
+    <li class="list-group-item">Email : {{ request.user.email }}</li>
+    <li class="list-group-item">First Name : {{ request.user.first_name }}</li>
+      <li class="list-group-item">Last Name : {{ request.user.last_name }}</li>
+  </ul>
+  <div class="card-body">
 
-              <h1> User Name : {{ request.user }} </h1>
-              </div>
-              <div class="alert alert-success text-center mb-3 ">
-              <p> Email : {{ request.user.email }}</p>
-              </div>
-              <div class="alert alert-success text-center mb-3 ">
-
-              <p> First Name : {{ request.user.first_name }}</p>
-              </div>
-              <div class="alert alert-success text-center mb-3 ">
-              <p> Last Name : {{ request.user.last_name }}</p>
-              </div>
-
-
-<a href="{% url 'machine_list' %}" class="btn btn-warning text-center"><b>Back to Main Page<b></b></a>
-
-
-
-
-
-
-
-     </div>
-     <!--</div>-->
+    <a href="{% url 'machine_list' %}" class="btn btn-warning text-center"><b>Back to Main Page</b></a>
+  </div>
+  </div>
+</div>
 </form>
-
-
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    </b>
+</center>
 </body>
 </html>

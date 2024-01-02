@@ -1,3 +1,131 @@
+{% load static %}
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Login -  Machine Management Portal</title>
+        <link href="{% static 'styles.css' %}" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+
+    <body class="bg-primary">
+<!--
+    <img src="/static/images/img_1.png" height="50" width="200">
+-->
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-5">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <center>
+                                        <img src="/static/images/img_1.png" height="50" width="200">
+                                    </center>
+
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Machine management portal</h3></div>
+                                    <div class="card-body">
+                                        <form method="post">
+                                            <div class="form-floating mb-3">
+
+
+                                                <center>
+                                                    {% csrf_token %}
+                                            {{ form.as_p }}
+                                                <button type="submit" class="btn btn-success btn-lg">Login</button>
+                                                </center>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <div id="layoutAuthentication_footer">
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; machine management portal 2023</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </footer>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+
+    </body>
+</html>
+
+
+
+
+
+
+<!--
+<html>
+<head>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+      *{
+      font-family: 'Poppins', sans-serif;
+
+      }
+    </style>
+</head>
+<body class="bg-dark">
+<div class="container text-center mt-3 p-3 border rounded  bg-light">
+    <h2>WELCOME TO MACHINE MANAGEMENT SYSTEM</h2>
+
+    </div>
+<b>
+<div class="container mt-5 p-5 border rounded bg-light">
+
+<form method="post">
+     <div class="mb-3 mt-3">
+          <div class="alert alert-primary text-center mb-3 ">
+              {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success btn-lg">Login</button>
+
+
+    </div>
+
+    </div>
+</form>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </b>
+</body>
+</html>-->
+
+
+
+
+<!--
 
 <html>
 <head>
@@ -44,3 +172,4 @@
 
 
 
+-->

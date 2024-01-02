@@ -7,13 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <style>
-        *{
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
+
 </head>
-<body class="bg-dark">
+<body class="bg-primary">
     <div class="container mt-5 p-5 border rounded bg-light">
     <div class="mb-3 mt-3">
         <div class="alert alert-success text-center mb-3 ">
@@ -31,7 +27,7 @@
                 {% endif %}
                     <p><b>Last Occupied: {{ machine.timestamp }}</b></p>
 
-                {% if machine.status == False %}
+                {% if machine.status == False and machine.user == request.user %}
                     {% if user_can_free %}
                         <p><a href="{% url 'unbook_machine' machine.id %}" class="btn btn-info"><b>Free</b></a></p>
                         <p><a href="{% url 'extend_booking' machine.id %}" class="btn btn-info"><b>Extend</b></a></p>
@@ -39,13 +35,15 @@
                 {% endif %}
                 <div id="notepad-content" style="display: flex; justify-content: space-between;">
                     {{ machine.notepad_content | linebreaks }}  {# Display the notepad content with line breaks #}
-                    <a href="{% url 'edit_notepad' machine.id %}" class="btn btn-info"><b>More Details</b></a></br>
+
                 
                     <!-- {% if request.user.is_superuser %}
                         <a href="{% url 'edit_notepad' machine.id %}">Edit Notepad</a></br>
                     {% endif %} -->
-
-                    <a href="{% url 'machine_list' %}" class="btn btn-warning"><b>Back to List<b></b></a>
+                    <a href="{% url 'edit_notepad' machine.id %}" class="btn btn-info"><b>More Details</b></a>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="{% url 'machine_list' %}" class="btn btn-warning"><b>Back to List</b></a>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
             {% endblock %}
 

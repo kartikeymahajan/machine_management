@@ -194,6 +194,22 @@ class CustomLogoutView(LogoutView):
 def profile_view(request):
     return render(request, 'profile.html')
 
+@login_required
+def bookedmachine(request):
+    return render(request, 'bookedmachine.html')
+
+@login_required
+def allmachine(request):
+    return render(request, 'allmachine.html')
+
+@login_required
+def freemachine(request):
+    return render(request, 'freemachine.html')
+
+@login_required
+def blockedmachine(request):
+    return render(request, 'blockedmachine.html')
+
 
 def send_booking_expiry_notification(user_name, user_email, machine_name):
     subject = 'Machine Unbook Reminder'

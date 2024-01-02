@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, admin
 from .views import CustomLogoutView
 from django.contrib.auth.views import LoginView
 
@@ -12,5 +12,9 @@ urlpatterns = [
     path('<int:machine_id>/edit_notepad/', views.edit_notepad, name='edit_notepad'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('login/', LoginView.as_view(), name='login'),
-    path('profile/', views.profile_view, name='profile')
+    path('profile/', views.profile_view, name='profile'),
+    path('freemachine/', views.freemachine, name='freemachine'),
+    path('bookedmachine/', views.bookedmachine, name='bookedmachine'),
+    path('allmachine/', views.allmachine, name='allmachine'),
+    path('blockedmachine/', views.blockedmachine, name='blockedmachine')
 ]

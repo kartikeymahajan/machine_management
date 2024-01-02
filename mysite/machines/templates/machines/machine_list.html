@@ -1,98 +1,248 @@
+
 {% load static %}
 
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <!-- Include Bootstrap CSS via CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <style>
-        *{
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
-
-</head>
-
-<body class="bg-body-tertiary bg-dark ">
-    {% block content %}
-    <div class = "container-fluid">
-        <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-            <img src="{% static 'images/nyriad.png' %}" alt="Company Logo">
-              <div class = "navbar-float-left"><a class="navbar-brand" href="#"><b>Machine Management Portal</b></a></div>
-
-              <div class="navbar-float-right" id="navbarSupportedContent">
-                <form class="d-flex" method="get" action="{% url 'machine_list' %}">
-                  <input class="form-control me-2" type="search" name = "search" placeholder="Search VM here" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-              </div>
-
-
-
-                <div class="dropdown">
-                    <div class="" data-bs-toggle="dropdown">
-                        <h3>
-                        <i class="fa-solid fa-user"> </i> {{ request.user }}
-                        </h3>
-                    </div >
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}">Log_Out</a></li>
-                       <!-- <li><a class="dropdown-item" href="#">Change_User</a></li>-->
-                    </ul>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dashboard - Hardware Management Portal</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="{% static 'styles.css' %}" rel="stylesheet" />
+        <script src="{% static 'js/scripts.js' %}"></script>
+        <script src="{% static 'js/datatables-simple-demo.js' %}"></script>
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-primary bg-primary">
+            <!--&lt;!&ndash; Navbar Brand&ndash;&gt;-->
+            <img src="/static/images/img_1.png" height="50" width="200">
+<!--
+            <a class="navbar-brand ps-3" href="index.html">NYRIAD</a>
+-->
+            <!--&lt;!&ndash; Sidebar Toggle&ndash;&gt;-->
+            <button style="color:black;" class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+          <!--  &lt;!&ndash; Navbar Search&ndash;&gt;-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group"><!--
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>-->
+                     <p style="color:black">India Time: <span id="indianTimeAndDate"></span></p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                <p style="color:black">New Zealand Time: <span id="newZealandTime"></span></p>
 
                 </div>
 
+            </form>
+           <!-- &lt;!&ndash; Navbar&ndash;&gt;-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <strong>{{ request.user }}</strong>
+                <li class="nav-item dropdown">
+                    <a style="color:white;" class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <center>
+                         <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <input type="submit" value="Logout">
+</form>
+                            </center>
+                    </ul>
+                </li>
+            </ul>
         </nav>
-        <main>
-            <div class="alert alert-dark text-center mb-3 bg-light" style="display: flex; justify-content: space-between;">
-                <button type="button" class="btn btn-light ">
-                    <b><p>India Time: <span id="indianTimeAndDate"></span></p></b>
-                </button>
-                <button type="button" class="btn btn-light">
-                    <b><p>New Zea Time: <span id="newZealandTime"></span></p></b>
-                </button>
-            </div>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Home</div>
+                            <a class="nav-link" href="#" target="_blank">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Hardware Page
 
+                            </a>
+                             <div class="sb-sidenav-menu-heading">Details</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Machine's details
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                {% for machine in machines %}
+                                <nav class="sb-sidenav-menu-nested nav">
 
-
-        <div class="container-sm ">
-            <div class="row row-cols-3">
-                {% for machine in machines %}
-                    <div class="col container  border rounded border-info bg-light text-center"> <h3><b>{{ machine.name }}</b></h3> </br>
-                        {% if machine.status %}
-                            <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" name="Active"><b>Book Machine</b></a>
-                            <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
-                        {% else %}
-                            <div class="alert alert-warning">
-                                (Occupied by {{ machine.user }} from {{ machine.start_time|date:"DATETIME_FORMAT" }} to {{ machine.end_time|date:"DATETIME_FORMAT" }})
+<!--
+                                    {{ machine.notepad_content | linebreaks }}
+-->
+                                    <a class="nav-link" href="{% url 'edit_notepad' machine.id %}">{{ machine.name }}</a>
+                                </nav>
+                                {% endfor %}
                             </div>
-                            <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" name="Inactive"><b>Details</b></a>
-                        {% endif %}
-                    </div>
-                    {% empty %}
-                    <h2 class="container p-1 border rounded bg-light text-center"><center>No Results Found</center></h2>
-                {% endfor %}
 
+                            <!--<div class="sb-sidenav-menu-heading">Addons</div>
+
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                FUNCTION 1
+                            </a>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                FUNCTION 2
+                            </a>-->
+                        </div>
+
+                    </div>
+
+
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        {{ request.user }}
+                    </div>
+
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Hardware Management Portal</li>
+                        </ol>
+                        <!--<div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">Free Machines</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="{% url 'freemachine' %}">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">Booked Machines</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-success text-white mb-4">
+                                    <div class="card-body">All Machines</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Blocked Machine</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>-->
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Server's details
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Booked upto</th>
+                                            <th>Reserved by</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Booked upto</th>
+                                            <th>Reserved by</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for machine in machines %}
+                                            {% if machine.status == True  %}
+                                        <tr>
+                                            <td><b> {{ machine.name }} </b></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><button type="button" class="btn btn-success">Available</button></td>
+                                            <td>
+                                                <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" ><b>Details</b></a>
+                                                <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" ><b>Book Machine</b></a>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                    <tr>
+                                            <td><b> {{ machine.name }} </b></td>
+                                            <td>India :- {{ machine.end_time|date:"DATETIME_FORMAT" }} </br>
+                                                New Zealand :- {{ machine.nz_end_time|date:"DATETIME_FORMAT" }}</td>
+                                            <td>{{ machine.user }}</td>
+                                            <td><button type="button" class="btn btn-danger">Booked</button>
+
+</td>
+                                            <td><a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" ><b>Details</b></a>
+                                                {% if machine.status == False and machine.user == request.user %}
+                                                    <a href="{% url 'extend_booking' machine.id %}" class="btn btn-warning"><b>Extend</b></a>
+                                                    <a href="{% url 'unbook_machine' machine.id %}" class="btn btn-secondary"><b>Free</b></a></td>
+                                                {% endif %}
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; machine management portal 2023</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
-    </main>
-</div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    {% endblock %}
-
-    <script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
+     <script>
         // Function to update the Indian time and date
         function updateIndianTimeAndDate() {
             const now = new Date();
@@ -105,16 +255,16 @@
                 minute: "2-digit"
             };
             const formattedTimeAndDate = now.toLocaleDateString("en-IN", options);
-    
+
             // Update the content of the element with the formatted time and date
             document.getElementById("indianTimeAndDate").textContent = formattedTimeAndDate;
         }
-    
+
         // Update Indian time and date immediately and then every second (1000 milliseconds)
         updateIndianTimeAndDate();
         setInterval(updateIndianTimeAndDate, 1000); // Update every second
     </script>
-    
+
 
     <script>
         // Function to update New Zealand time
@@ -129,15 +279,19 @@
                 minute: "2-digit"
             };
             const formattedTime = now.toLocaleTimeString("en-NZ", options);
-    
+
             // Update the content of the element with the formatted time
             document.getElementById("newZealandTime").textContent = formattedTime;
         }
-    
+
         // Update New Zealand time immediately and then every second (1000 milliseconds)
         updateNewZealandTime();
         setInterval(updateNewZealandTime, 1000); // Update every second
     </script>
 
-</body>
+
+
+
+    </body>
 </html>
+
