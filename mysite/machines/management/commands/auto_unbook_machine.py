@@ -9,7 +9,7 @@ class Command(BaseCommand):
     msg = 'Your Booking has been expired, Please extend it or free up the machine'
     def handle(self, *args, **kwargs):
         # Get bookings that are expired (end_time <= current_time)
-        expiring_bookings = Booking.objects.filter(end_time__lte=(timezone.now()-timedelta(minutes=10)))
+        expiring_bookings = Booking.objects.filter(end_time__lte=(timezone.now()-timedelta(minutes=5)))
         for booking in expiring_bookings:
             auto_unbook_machine(booking.machine.name)
             

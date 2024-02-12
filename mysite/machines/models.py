@@ -14,6 +14,7 @@ class Machine(models.Model):
     end_time = models.DateTimeField(null=True, blank=True)
     timestamp = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=True)  # True for free, False for occupied
+    blooked = models.BooleanField(default=False) # False for system is working, True for system blooked or having any issues
     purpose = models.TextField(blank=True)
     nz_start_time = models.DateTimeField(null=True, blank=True)
     nz_end_time = models.DateTimeField(null=True, blank=True)

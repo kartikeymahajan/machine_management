@@ -17,7 +17,7 @@ run_date = datetime.now() + timedelta(minutes=1)
 trigger = DateTrigger(run_date=run_date)
 scheduler.add_job(send_booking_notifications_job, 'interval', minutes = 1)
 # 'cron' style scheduling to run every day at 8:00 AM. You can adjust the time as needed.
-scheduler.add_job(hardware_daily_status, 'cron', hour=00, minute=30)
+scheduler.add_job(hardware_daily_status, 'cron', hour=20, minute=16)
 scheduler.add_job(trigger_auto_unbook, 'interval', minutes = 1)
 
 scheduler.start()

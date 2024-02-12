@@ -42,9 +42,9 @@
                 <li class="nav-item dropdown">
                     <a style="color:yellow;" class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><center><a class=" btn btn-secondary" href="{% url 'profile' %}">Profile</a></center></li>
-                        <!--<li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Activity Log</a></li>-->
+                        <li><center><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></center></li>
+                        <li><a class="dropdown-item" href="{% url 'admin_redirect' %}">Admin Dashboard</a></li>
+                        <!-- <li><a class="dropdown-item" href="#">Activity Log</a></li>-->
                         <li><hr class="dropdown-divider" /></li>
                         <center>
                          <form method="post" action="{% url 'logout' %}">
@@ -114,48 +114,6 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Hardware Management Portal</li>
                         </ol>
-                        <!--<div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Free Machines</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="{% url 'freemachine' %}">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Booked Machines</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">All Machines</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Blocked Machine</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>-->
 
                         <div class="card mb-4">
                             <div class="card-header">
@@ -184,36 +142,46 @@
                                     </tfoot>
                                     <tbody>
                                     {% for machine in machines %}
-                                            {% if machine.status == True  %}
-                                        <tr>
-                                            <td><b> {{ machine.name }} </b></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td><button type="button" class="btn btn-success">Available</button></td>
-                                            <td>
-                                                <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" ><b>Details</b></a>
-                                                <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" ><b>Book Machine</b></a>
-                                            </td>
-                                        </tr>
-                                    {% else %}
-                                    <tr>
-                                            <td><b> {{ machine.name }} </b></td>
-                                            <td>India :- {{ machine.end_time|date:"DATETIME_FORMAT" }} </br>
-                                                New Zealand :- {{ machine.nz_end_time|date:"DATETIME_FORMAT" }}</td>
-                                            <td>{{ machine.user }}</td>
-                                            <td><button type="button" class="btn btn-danger">Booked</button>
-
-</td>
-                                            <td><a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" ><b>Details</b></a>
-                                                {% if machine.status == False and machine.user == request.user %}
-                                                    <a href="{% url 'extend_booking' machine.id %}" class="btn btn-warning"><b>Extend</b></a>
-                                                    <a href="{% url 'unbook_machine' machine.id %}" class="btn btn-secondary"><b>Free</b></a></td>
+                                        {% if machine.status == True %}
+                                            <tr>
+                                                <td><b> {{ machine.name }} </b></td>
+                                                {% if machine.blooked == False %}
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><button type="button" class="btn btn-success">Available</button></td>
+                                                    <td>
+                                                        <a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" ><b>Details</b></a>
+                                                        <a href="{% url 'book_machine' machine.id %}" class="btn btn-primary" ><b>Book Machine</b></a>
+                                                    </td>
+                                                {% else %}
+                                                    <td class="table-danger"></td>
+                                                    <td class="table-danger"></td>
+                                                    <td class="table-danger"><button type="button" class="btn btn-danger">Blooked</button></td>
+                                                    <td class="table-danger"><a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" ><b>Details</b></a></td>
                                                 {% endif %}
-                                    </tr>
-                                    {% endif %}
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td><b> {{ machine.name }} </b></td>
+                                                {% if machine.blooked == False %}
+                                                    <td>India : {{ machine.end_time|date:"DATETIME_FORMAT" }} </br>
+                                                        New Zealand : {{ machine.nz_end_time|date:"DATETIME_FORMAT" }}</td>
+                                                    <td>{{ machine.user }}</td>
+                                                    <td><button type="button" class="btn btn-danger">Booked</button></td>
+                                                    <td><a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" ><b>Details</b></a>
+                                                        {% if machine.status == False and machine.user == request.user %}
+                                                            <a href="{% url 'extend_booking' machine.id %}" class="btn btn-warning"><b>Extend</b></a>
+                                                            <a href="{% url 'unbook_machine' machine.id %}" class="btn btn-secondary"><b>Free</b></a></td>
+                                                        {% endif %}
+                                                {% else %}
+                                                    <td class="table-danger"></td>
+                                                    <td class="table-danger"></td>
+                                                    <td class="table-danger"><button type="button" class="btn btn-danger">Blooked</button></td>
+                                                    <td class="table-danger"><a href="{% url 'machine_detail' machine.id %}" class="btn btn-info" ><b>Details</b></a></td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endif %}
                                     {% endfor %}
-
-
                                     </tbody>
                                 </table>
                             </div>

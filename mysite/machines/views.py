@@ -85,8 +85,10 @@ def book_machine(request, machine_id):
             )
 
             machine.save()
-            print(machine.name, request.user, start_time, end_time)
-            date_time = end_time.strftime("%m/%d/%Y, %H:%M:%S")
+            print(machine.name, request.user, machine.start_time.strftime("%m/%d/%Y, %H:%M:%S"), machine.end_time.strftime("%m/%d/%Y, %H:%M:%S"))
+            print(Booking.end_time)
+            date_time = machine.end_time.strftime("%m/%d/%Y, %H:%M:%S")
+            print(f"ate_time{date_time}")
             send_slack_booking_notification(request.user, machine.name, date_time)
 
             return redirect('machine_list')
@@ -96,8 +98,8 @@ def book_machine(request, machine_id):
 
 @login_required
 def extend_booking(request, machine_id):
-    machine = get_object_or_404(Machine, pk=machine_id, user=request.user, status=False, end_time__gte=timezone.now())
-    booking = Booking.objects.filter(machine=machine, user=request.user, end_time__gte=timezone.now()).first()
+    machine = get_object_or_404(Machine, pk=machine_id, user=request.user, status=False)
+    booking = Booking.objects.filter(machine=machine, user=request.user).first()
 
     if not booking:
         raise Http404("No active booking found for this machine.")
@@ -106,10 +108,18 @@ def extend_booking(request, machine_id):
         booking_form = BookingForm(request.POST)
         if booking_form.is_valid():
             extend_duration = calculate_extend_duration(booking_form.cleaned_data)
+            if machine.end_time <= timezone.now():
+                machine.end_time = timezone.now()
+                machine.nz_end_time = timezone.now()
+                booking.end_time = timezone.now()
             machine.end_time += timedelta(minutes=extend_duration)
+            machine.nz_end_time += timedelta(minutes=extend_duration)
             booking.end_time += timedelta(minutes=extend_duration)
+            booking.notification_sent = False
             machine.save()
             booking.save()
+            date_time = booking.end_time.strftime("%m/%d/%Y, %H:%M:%S")
+            send_slack_booking_extend_notification(machine.name, date_time)
             # messages.success(request, 'Booking extended successfully.')
             return redirect('machine_list')
 
@@ -195,23 +205,14 @@ def profile_view(request):
     return render(request, 'profile.html')
 
 @login_required
-def bookedmachine(request):
-    return render(request, 'bookedmachine.html')
-
-@login_required
-def allmachine(request):
-    return render(request, 'allmachine.html')
-
-@login_required
-def freemachine(request):
-    return render(request, 'freemachine.html')
-
-@login_required
-def blockedmachine(request):
-    return render(request, 'blockedmachine.html')
+def admin_redirect(request):
+    return redirect('admin:index')
 
 
 def send_booking_expiry_notification(user_name, user_email, machine_name):
+    """Send booking expiry notification of users mail id"""
+
+    machine_name = machine_name.replace('(ETH)', '').replace('(IB)', '')
     subject = 'Machine Unbook Reminder'
     message = f'''Dear {user_name},\n\nYour booking for {machine_name} has been ended.\n
     Please free up the machine or extend the booking period.\n
@@ -219,43 +220,59 @@ def send_booking_expiry_notification(user_name, user_email, machine_name):
     Please make a note it will automatically free up in one hour.\n
 
     Thanks!\n
-    
+
     \n\n **********This is an automated mail, don't reply.**********'''
-    from_email = 'kartikeymahajan321@gmail.com'  # Use the same email configured in settings.py
+    from_email = ''  # Use the same email configured in settings.py
     recipient_list = [user_email]
 
     send_mail(subject, message, from_email, recipient_list)
 
 
-def send_slack_message(name, vm_name):
+def send_slack_message(user_name, machine_name):
     """ send message to our slack channel """
     
-    payload = {"text": f"Hello {name}, Your booking for {vm_name} is expired. Please free up the machine"}
+    machine_name = machine_name.replace('(ETH)', '').replace('(IB)', '')
+    payload = {"text": f"Hello {user_name}, Your booking for {machine_name} is expired. Please free up the machine"}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
         json=payload
     )
     print(response.text)
 
-def send_slack_booking_notification(name, vm_name, end_time):
+def send_slack_booking_notification(user_name, machine_name, end_time):
 
     """ send booking confirmation on slack """
     
-    payload = {"text": f"{vm_name} is occupied by {name} till {end_time}"}
+    machine_name = machine_name.replace('(ETH)', '').replace('(IB)', '')
+    payload = {"text": f"{machine_name} is occupied by {user_name} till {end_time}"}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )
     print(response.text)
 
-def send_slack_unbooking_notification(vm_name):
+def send_slack_booking_extend_notification(machine_name, end_time):
+
+    """ send extend booking confirmation on slack """
+    
+    machine_name = machine_name.replace('(ETH)', '').replace('(IB)', '')
+    payload = {"text": f"{machine_name} booking is extended till {end_time}"}
+    response = requests.post(
+       "https://hooks.slack.com/services/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",
+       
+        json=payload
+    )
+    print(response.text)
+
+def send_slack_unbooking_notification(machine_name):
 
     """ send booking confirmation on slack """
     
-    payload = {"text": f"{vm_name} is free now."}
+    machine_name = machine_name.replace('(ETH)', '').replace('(IB)', '')
+    payload = {"text": f"{machine_name} is free now."}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )
@@ -267,9 +284,19 @@ def send_slack_hardware_details(data):
     
     payload = {"text": data}
     response = requests.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
        
         json=payload
     )
     print(response.text)
-    
+
+def send_booking_expiry_notification_on_slack(user_name, machine_name):
+    """send booking expiry intimetion/warning on slack"""
+    machine_name = machine_name.replace('(ETH)', '').replace('(IB)', '')
+    payload = {"text": f"Hi {user_name}, Your booking for {machine_name} is over. Please free up the system or exeted it, if needed."}
+    response = requests.post(
+       "https://hooks.slack.com/services/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",
+       
+        json=payload
+    )
+    print(response.text)
